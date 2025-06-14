@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Você é Especial</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('background.jpg') center/cover no-repeat;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+
+      /* Fade-in inicial */
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    body.loaded {
+      opacity: 1;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.5);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.5em;
+      line-height: 1.4;
+      margin-bottom: 30px;
+    }
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .presente {
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: 15px;
+      transition: transform 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      background-color: #fff;
+    }
+    .presente img.preview,
+    .presente video.preview {
+      display: none;
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+    .presente .fechado {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .presente.aberto .fechado {
+      display: none;
+    }
+    .presente.aberto img.preview,
+    .presente.aberto video.preview {
+      display: block;
+    }
+
+    @keyframes abrirPresente {
+      0% {
+        transform: scale(1) rotate(0deg);
+      }
+      50% {
+        transform: scale(1.1) rotate(-10deg);
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .presente.aberto {
+      animation: abrirPresente 0.5s ease;
+    }
+
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      display: none;
+    }
+    .lightbox-content img,
+    .lightbox-content video {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 10px;
+    }
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Para alguém que eu amo</h1>
+    <p>
+      Cada momento ao seu lado é um presente. Seu sorriso, sua essência e sua presença tornam meus dias mais lindos.
+      Este site é só um pedacinho do que sinto por você. Espero que ♥
+    </p>
+
+    <style>
+    .texto-com-sombra h1, .texto-com-sombra p {
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
+    </style>
+
+    <div class="galeria">
+      <!-- Presente 1 -->
+      <div class="presente" data-tipo="img" data-src="galeria/IMG-20250529-WA0004.jpg">
+        <img src="present.png" class="fechado" alt="presente">
+        <img src="galeria/IMG-20250529-WA0004.jpg" class="preview" alt="Ela">
+      </div>
+      <!-- Presente 2 -->
+      <div class="presente" data-tipo="img" data-src="galeria/IMG-20250523-WA0012.jpg">
+        <img src="present.png" class="fechado" alt="presente">
+        <img src="galeria/IMG-20250523-WA0012.jpg" class="preview" alt="Ela">
+      </div>
+      <!-- Presente 3 -->
+      <div class="presente" data-tipo="img" data-src="galeria/IMG-20250514-WA0005.jpg">
+        <img src="present.png" class="fechado" alt="presente">
+        <img src="galeria/IMG-20250514-WA0005.jpg" class="preview" alt="Ela">
+      </div>
+      <!-- Presente 4 -->
+      <div class="presente" data-tipo="img" data-src="galeria/IMG-20250510-WA0004.jpg">
+        <img src="present.png" class="fechado" alt="presente">
+        <img src="galeria/IMG-20250510-WA0004.jpg" class="preview" alt="Ela">
+      </div>
+      <!-- Presente 5 -->
+      <div class="presente" data-tipo="img" data-src="galeria/IMG-20250505-WA0050.jpg">
+        <img src="present.png" class="fechado" alt="presente">
+        <img src="galeria/IMG-20250505-WA0050.jpg" class="preview" alt="Ela">
+      </div>
+      <!-- Presente com vídeo -->
+      <div class="presente" data-tipo="video" data-src="galeria/VID-20250512-WA0002.mp4">
+        <img src="present.png" class="fechado" alt="presente">
+        <video class="preview" muted><source src="galeria/VID-20250512-WA0002.mp4" type="video/mp4"></video>
+      </div>
+      <!-- Presente 6 -->
+      <div class="presente" data-tipo="img" data-src="galeria/IMG-20250505-WA0026.jpg">
+        <img src="present.png" class="fechado" alt="presente">
+        <img src="galeria/IMG-20250505-WA0026.jpg" class="preview" alt="Ela">
+      </div>
+      <!-- Presente 7 -->
+      <div class="presente" data-tipo="img" data-src="galeria/IMG-20250503-WA0012.jpg">
+        <img src="present.png" class="fechado" alt="presente">
+        <img src="galeria/IMG-20250503-WA0012.jpg" class="preview" alt="Ela">
+      </div>
+      <!-- Presente 8 -->
+      <div class="presente" data-tipo="img" data-src="galeria/IMG-20250429-WA0010.jpg">
+        <img src="present.png" class="fechado" alt="presente">
+        <img src="galeria/IMG-20250429-WA0010.jpg" class="preview" alt="Ela">
+      </div>
+      <!-- Presente 9 -->
+      <div class="presente" data-tipo="img" data-src="galeria/Imagem do WhatsApp de 2025-06-14 à(s) 12.43.02_3d9d4d00.jpg">
+        <img src="present.png" class="fechado" alt="presente">
+        <img src="galeria/Imagem do WhatsApp de 2025-06-14 à(s) 12.43.02_3d9d4d00.jpg" class="preview" alt="Ela">
+      </div>
+    </div>
+
+    <audio id="musicaFundo" autoplay loop>
+      <source src="Musica/tv-girl-cigarettes-out-the-window.mp3" type="audio/mpeg">
+      Seu navegador não suporta áudio.
+    </audio>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content" id="lightbox-content"></div>
+  </div>
+
+  <script>
+    const presentes = document.querySelectorAll('.presente');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightbox-content');
+
+    presentes.forEach(presente => {
+      let aberto = false;
+
+      presente.addEventListener('click', () => {
+        if (!aberto) {
+          presente.classList.add('aberto');
+          aberto = true;
+        } else {
+          const tipo = presente.getAttribute('data-tipo');
+          const src = presente.getAttribute('data-src');
+          lightboxContent.innerHTML = '';
+
+          if (tipo === 'img') {
+            const img = document.createElement('img');
+            img.src = src;
+            lightboxContent.appendChild(img);
+          } else if (tipo === 'video') {
+            const video = document.createElement('video');
+            video.src = src;
+            video.controls = true;
+            video.autoplay = true;
+            lightboxContent.appendChild(video);
+          }
+
+          lightbox.style.display = 'flex';
+        }
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+      lightboxContent.innerHTML = '';
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Fade-in ao carregar a página
+      document.body.classList.add('loaded');
+
+      // Tocar música de fundo (se permitido)
+      const audio = document.getElementById('musicaFundo');
+      const playPromise = audio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.warn("Autoplay bloqueado. Requer interação do usuário.");
+        });
+      }
+    });
+  </script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('musicaFundo');
+
+    // Tenta tocar a música assim que o DOM carrega
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log('Música começou automaticamente.');
+        })
+        .catch(error => {
+          console.warn('Autoplay bloqueado. Aguardando interação do usuário...');
+          // Se o navegador bloquear, adiciona um click listener para tocar ao primeiro clique
+          document.body.addEventListener('click', () => {
+            audio.play();
+          }, { once: true });
+        });
+    }
+  });
+</script>
+
+<audio id="musicaFundo" autoplay loop>
+  <source src="Musica/tv-girl-cigarettes-out-the-window.mp3" type="audio/mpeg">
+  Seu navegador não suporta áudio.
+</audio>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('musicaFundo');
+
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log('Música começou automaticamente.');
+        })
+        .catch(error => {
+          console.warn('Autoplay bloqueado. Aguardando interação do usuário...');
+          document.body.addEventListener('click', () => {
+            audio.play();
+          }, { once: true });
+        });
+    }
+  });
+</script>
+
+<div id="controlesMusica" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+  <button id="toggleMusica" style="
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+  ">
+    <svg id="iconeMusica" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="hotpink" width="40px" height="40px">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('musicaFundo');
+    const toggleBtn = document.getElementById('toggleMusica');
+    const iconeMusica = document.getElementById('iconeMusica');
+
+    // Autoplay com fallback
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        document.body.addEventListener('click', () => audio.play(), { once: true });
+      });
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        iconeMusica.innerHTML = '<path d="M8 5v14l11-7z"/>';  // ▶️ Play Icon
+      } else {
+        audio.pause();
+        iconeMusica.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';  // ⏸️ Pause Icon
+      }
+    });
+  });
+</script>
+
+<script>
+let lastHeartTime = 0;
+
+document.addEventListener('mousemove', function(e) {
+  const now = Date.now();
+  if (now - lastHeartTime > 80) {  // Apenas 1 coração a cada 80ms
+    lastHeartTime = now;
+
+    const heart = document.createElement('div');
+    heart.classList.add('cursor-heart');
+    heart.style.left = e.pageX + 'px';
+    heart.style.top = e.pageY + 'px';
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 1000);
+  }
+});
+</script>
+
+<style>
+.cursor-heart {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: hotpink;
+  transform: rotate(45deg);
+  animation: fadeOut 1s forwards;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.cursor-heart::before,
+.cursor-heart::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: hotpink;
+  border-radius: 50%;
+}
+
+.cursor-heart::before {
+  top: -6px;
+  left: 0;
+}
+
+.cursor-heart::after {
+  top: 0;
+  left: -6px;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) scale(1.5);
+  }
+}
+</style>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(270deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
+  background-size: 800% 800%;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  opacity: 0;
+  transition: opacity 1s ease;
+  animation: backgroundAnimation 20s ease infinite;
+}
+
+@keyframes backgroundAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+
+</body>
+</html>
+
